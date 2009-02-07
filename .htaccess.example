@@ -1,0 +1,13 @@
+# .htaccess example for crossgoat
+#
+# You can enable CGI in any directory with following directives if server permits it
+#
+Options +ExecCGI
+AddHandler cgi-script .py
+
+#
+# Rewrite standard LJ API path /interface/flat to crossgoat.py CGI executable
+#
+RewriteEngine On
+RewriteBase /test/crossgoat
+RewriteRule interface/(xmlrpc|flat) crossgoat.py

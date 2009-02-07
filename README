@@ -1,0 +1,18 @@
+Crossgoat is Livejournal crossposting tool that acts as LJ posting API proxy. It
+allows you to automatically cross-post your blog posts to multiple servers based
+on Livejournal code (for example, livejournal.com and lj.rossia.org).
+
+Crossgoat acts as a proxy for LJ posting protocol (only 'plain' is supported
+right now, xmlrpc not supported). You configure client to post to crossgoat cgi
+script and post is cross-posted to LJ servers set in config.
+
+== Install ==
+
+To install, you need a webserver with CGI support and Python installed in system
+(tested with Python 2.5, I don't know if it will work on other versions).
+
+There is example .htaccess for Apache httpd.
+
+After installing CGI executable, copy/rename crossgoat.ini.example to
+crossgoat.ini and edit it. You can add multiple users and more than two posting
+destinations for each user.

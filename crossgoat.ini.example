@@ -1,0 +1,14 @@
+; crossgoat.ini example
+;
+;[user:loluser]                                          ; Username for logging in to crossgoat proxy
+;in_hpassword: a86850deb2742ec3cb41518e26aa2d89          ; MD5 of password for logging in to crossgoat proxy
+;
+;out_1_url: http://livejournal.com/interface/flat        ; LJ posting API URL for destination #1
+;out_1_login: dolboeb                                    ; Username for destination #1
+;out_1_hpassword: 6fb6c11752c2eb6849d67b3102295304       ; MD5 of password for destination #1
+;
+;out_2_url: http://lj.rossia.org/interface/flat          ; LJ posting API URL for destination #2
+;out_2_login: poper                                      ; Username for destination #2
+;out_2_hpassword: 6fb6c11752c2eb6849d67b3102295304       ; MD5 of password for destination #2
+;
+;
