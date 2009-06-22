@@ -22,6 +22,13 @@
 
 import sys, cgi, cgitb, urllib
 import ConfigParser
+from itertools import tee, izip
+
+try:
+    from google.appengine.api.urlfetch import fetch
+    use_gae_urlfetch = True
+except ImportError:
+    use_gae_urlfetch = False
 
 #cgitb.enable()
 form = cgi.FieldStorage()
@@ -31,6 +38,30 @@ successfullyRead = config.read(["crossgoat.ini"])
 if not successfullyRead:
     print "Cannot read config file"
     sys.exit(3)
+
+def pairwise(iterable):
+    a, b = tee(iterable)
+    next(b, None)
+    return izip(a, b)
+
+def lj_flat_post(url, post_payload):
+    response = {}
+    if not use_gae_urlfetch:
+        f = urllib.urlopen(url, post_payload)
+
+        while 1:
+            key = f.readline().rstrip()
+            value = f.readline().rstrip()
+
+            if not key: break
+            response[key] = value
+
+    else:
+        resp = fetch(url, post_payload, 'POST')
+        for key, value in pairwise(resp.content.split("\n")):
+            response[key] = value
+
+    return response
 
 class InAuthFailure(Exception):
     def __str__(self):
@@ -83,14 +114,7 @@ class OutProfile:
         for a in post.props:
             args[a] = post.props[a]
 
-        f = urllib.urlopen(self.url, urllib.urlencode(args))
-        response = {}
-        while 1:
-            key = f.readline().rstrip()
-            value = f.readline().rstrip()
-            
-            if not key: break
-            response[key] = value
+        response = lj_flat_post(self.url, urllib.urlencode(args))
 
         if response['success'] == 'FAIL':
             raise PostingException(response['errmsg'], self)
