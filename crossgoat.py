@@ -27,7 +27,10 @@ import ConfigParser
 form = cgi.FieldStorage()
 config = ConfigParser.ConfigParser()
 
-config.read(["crossgoat.ini"])
+successfullyRead = config.read(["crossgoat.ini"])
+if not successfullyRead:
+    print "Cannot read config file"
+    sys.exit(3)
 
 class InAuthFailure(Exception):
     def __str__(self):
