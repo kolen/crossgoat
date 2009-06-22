@@ -49,11 +49,7 @@ def lj_flat_post(url, post_payload):
     if not use_gae_urlfetch:
         f = urllib.urlopen(url, post_payload)
 
-        while 1:
-            key = f.readline().rstrip()
-            value = f.readline().rstrip()
-
-            if not key: break
+        for key, value in pairwise(f):
             response[key] = value
 
     else:
