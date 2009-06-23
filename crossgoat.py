@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
 # Copyright (c) 2009 Konstantin Mochalov
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,7 +61,7 @@ def lj_flat_post(url, post_payload):
 
 class InAuthFailure(Exception):
     def __str__(self):
-        return "In Auth failure";        
+        return "In Auth failure";
 
 class UnsupportedException(Exception):
     def __init__(self, value):
@@ -119,14 +119,14 @@ class InUser:
     def __init__(self, name):
         self.outProfiles = []
         self.name = name
-        
+
         try:
             section = "user:%s" % name
             self.hpassword = config.get(section, "in_hpassword")
         except ConfigParser.NoSectionError:
             raise InAuthFailure()
 
-        try:            
+        try:
             i=1
             while(1):
                 newtarget = OutProfile()
@@ -135,9 +135,9 @@ class InUser:
                 newtarget.hpassword = config.get(section, "out_%d_hpassword"%i)
 
                 self.outProfiles.append(newtarget)
-                
+
                 i+=1
-            
+
         except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             return
 
@@ -193,7 +193,7 @@ class InInterfaceBase:
                 return {'success': 'FAIL',
                         'errmsg': str(e)
                         }
-            
+
             return {'success': 'OK',
                     'itemid': 0,
                     'anum': 0,
@@ -202,11 +202,11 @@ class InInterfaceBase:
 
         except InAuthFailure:
             return {'success': 'FAIL', 'errmsg': 'Auth failure'}
-        
+
 class InInterfaceFlat(InInterfaceBase):
     def __init__(self, fieldStorage):
         self.fieldStorage = fieldStorage
-    
+
     def dispatch(self):
         args = {}
         for key in self.fieldStorage:
@@ -223,13 +223,11 @@ class InInterfaceFlat(InInterfaceBase):
             result = {'success': 'FAIL',
                       'errmsg': e.value
                       }
-            
+
         print "Content-type: text/plain\n"
         for i in result:
             print i
             print result[i]
-            
 
 iface = InInterfaceFlat(form)
 iface.dispatch()
-
