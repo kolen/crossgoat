@@ -41,7 +41,10 @@ if not successfullyRead:
 
 def pairwise(iterable):
     a, b = tee(iterable)
-    next(b, None)
+    try:
+        b.next()
+    except StopIteration:
+        pass
     return izip(a, b)
 
 def lj_flat_post(url, post_payload):
